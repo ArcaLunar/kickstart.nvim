@@ -99,7 +99,7 @@ do
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -126,6 +126,10 @@ do
 
   -- Enable break indent
   vim.o.breakindent = true
+  vim.o.tabstop = 2
+  vim.o.expandtab = true
+  vim.o.softtabstop = 2
+  vim.o.shiftwidth = 2
 
   -- Enable undo/redo changes even after closing and reopening a file
   vim.o.undofile = true
@@ -733,24 +737,42 @@ do
   --  See `:help lsp-config` for information about keys and how to configure
   ---@type table<string, vim.lsp.Config>
   local servers = {
+    -- NOTE: C/C++
     clangd = {},
-    -- gopls = {},
-    -- pyright = {},
+
+    -- NOTE: Golang
+    gopls = {},
+
+    -- NOTE: Python
+    basedpyright = {},
+    black = {}, -- formatter for Python
+
+    -- NOTE: Rust
     rust_analyzer = {},
-    --
-    -- Some languages (like typescript) have entire language plugins that can be useful:
-    --    https://github.com/pmizio/typescript-tools.nvim
-    --
-    -- But for many setups, the LSP (`ts_ls`) will work just fine
-    -- ts_ls = {},
+
+    -- NOTE: Zig
+    zls = {},
+
+    -- NOTE: Typescript
+    ts_ls = {},
     -- tsc = {},
-    --
-    -- Some languages (like rust) have entire language plugins that can be useful:
-    --    https://github.com/mrcjkb/rustaceanvim
 
+    -- NOTE: Haskell
+    hls = {},
+    ormolu = {},
+    hlint = {},
+
+    -- NOTE: Fish shell
+    fish_lsp = {},
+
+    -- NOTE: Odin
+    ols = {},
+
+    -- NOTE: toml
+    taplo = {},
+
+    -- NOTE: Special Lua Config, as recommended by neovim help docs
     stylua = {}, -- Used to format Lua code
-
-    -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
       on_init = function(client)
         client.server_capabilities.documentFormattingProvider = false -- Disable formatting (formatting is done by stylua)
@@ -952,7 +974,7 @@ do
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
   -- Ensure basic parsers are installed
-  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'scheme', 'odin', 'toml' }
   require('nvim-treesitter').install(parsers)
 
   ---@param buf integer
@@ -1023,7 +1045,6 @@ do
   require 'kickstart.plugins.lint'
   require 'kickstart.plugins.autopairs'
   require 'kickstart.plugins.neo-tree'
-  require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
 
   -- NOTE: Themes
   require 'kickstart.plugins.themes.token'
